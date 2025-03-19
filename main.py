@@ -44,8 +44,9 @@ def get_geckodriver(destino:str):
     download_url = f'https://github.com/mozilla/geckodriver/releases/download/{version}/{asset_name}'
     with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Mozilla\Mozilla Firefox") as key:
                 firefox_version, _ = winreg.QueryValueEx(key, "CurrentVersion")
-                firefox_version
-    name_version=f'FIREFOX{firefox_version.split('.')[0]}.exe'
+    
+    nome_arquivo = firefox_version.split('.')[0]
+    name_version=f'FIREFOX{nome_arquivo}.exe'
 
 
     response = httpx.get(download_url, follow_redirects= True)
@@ -146,7 +147,7 @@ elif os.path.exists(pasta_studio_2):
 
 
 if os.path.exists(pasta_agent):
-     arquivos = os.listdir(pasta_studio)
+     arquivos = os.listdir(pasta_agent)
      chrome = list(filter(lambda x: 'CHROME' in x, arquivos))
      firefox = list(filter(lambda x: 'FIREFOX' in x, arquivos))
      for arquivo in chrome:
@@ -155,7 +156,7 @@ if os.path.exists(pasta_agent):
             mv_chrome_a = int(versao_str)
             amv_chrome_a = arquivo
 
-     if chrome_version > mv_chrome_s:
+     if chrome_version > mv_chrome_a:
         get_chromedriver(pasta_agent)
 
      for arquivo in firefox:
@@ -164,6 +165,5 @@ if os.path.exists(pasta_agent):
                mv_firefox_a = int(versao_str)
                amv_firefox_a = arquivo
 
-     if firefox_version > mv_firefox_s:
+     if firefox_version > mv_firefox_a:
           get_geckodriver(pasta_agent)
-   
