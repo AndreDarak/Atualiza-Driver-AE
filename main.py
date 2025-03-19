@@ -4,6 +4,7 @@ import zipfile
 import os
 import winreg
 import shutil
+import time
 
 
 def get_chromedriver(destino:str):
@@ -68,6 +69,7 @@ def get_geckodriver(destino:str):
     return True
 
 pasta_studio = r'C:\AutomationEdge\process-studio\psplugins\web-gui\webui_drivers'
+pasta_studio_2 = r'C:\AutomationEdge\Studio\process-studio\psplugins\web-gui\webui_drivers'
 mv_chrome_s = -1
 amv_chrome_s = ''
 mv_firefox_s = -1
@@ -119,6 +121,29 @@ if os.path.exists(pasta_studio):
      if firefox_version > mv_firefox_s:
           get_geckodriver(pasta_studio)
 
+elif os.path.exists(pasta_studio_2):
+        arquivos = os.listdir(pasta_studio_2)
+        chrome = list(filter(lambda x: 'CHROME' in x, arquivos))
+        firefox = list(filter(lambda x: 'FIREFOX' in x, arquivos))
+        for arquivo in chrome:
+          versao_str = ''.join(filter(str.isdigit, arquivo))
+          if int(versao_str) > mv_chrome_s:
+               mv_chrome_s = int(versao_str)
+               amv_chrome_s = arquivo
+    
+        if chrome_version > mv_chrome_s:
+            get_chromedriver(pasta_studio_2)
+
+        for arquivo in firefox:
+          versao_str = ''.join(filter(str.isdigit, arquivo))
+          if int(versao_str) > mv_firefox_s:
+               mv_firefox_s = int(versao_str)
+               amv_firefox_s = arquivo
+
+        if firefox_version > mv_firefox_s:
+          get_geckodriver(pasta_studio_2)
+     
+
 
 if os.path.exists(pasta_agent):
      arquivos = os.listdir(pasta_studio)
@@ -141,3 +166,4 @@ if os.path.exists(pasta_agent):
 
      if firefox_version > mv_firefox_s:
           get_geckodriver(pasta_agent)
+   
